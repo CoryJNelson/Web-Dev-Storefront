@@ -1,3 +1,10 @@
+// Route files:
+// - Define the endpoints (URLs) of the API
+// - Handle CRUD operations (POST, GET, PUT, DELETE)
+// - Map endpoints to controller logic
+
+// auth.js handles all requests coming in under the /api/auth endpoint
+
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -6,7 +13,7 @@ const User = require("../models/User");
 // HTTP requests
 
 // REGISTER a User
-router.post("/register", async (req, res) => {
+router.post("/register", async (req, res, next) => {
     try {
         // Generate salt - unique to every password
         const salt = await bcrypt.genSalt(10);
@@ -22,27 +29,27 @@ router.post("/register", async (req, res) => {
 
         // Save user to the database
         const savedUser = await newUser.save();
+        console.log(`User ${savedUser.username} successfully registered...`);
         res.status(201).json(savedUser);
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        next({ status: 500, message: "Failed to register user...", ogError: err });
     }
 });
 
 // LOGIN
-router.post("/login", async (req, res) => {
+router.post("/login", async (req, res, next) => {
     try {
         // check username
         const user = await User.findOne({ username: req.body.username });
         if (!user) {
             // use return - else function will continue and send a second response
-            return res.status(401).json("User not found...");
+            return next({ status: 401, message: "User not found..." });
         }
 
         // check password
         const comparePassword = await bcrypt.compare(req.body.password, user.password);
         if (!comparePassword) {
-            return res.status(401).json("Incorrect password...");
+            return next({ status: 401, message: "Incorrect password..." });
         }
 
         // assign token
@@ -57,9 +64,9 @@ router.post("/login", async (req, res) => {
 
         // respond with destructured user and token
         res.status(200).json({ ...others, token });
+        console.log(`User ${user.username} successfully signed in...`);
     } catch (err) {
-        console.log(err);
-        res.status(500).json(err);
+        next({ status: 500, message: "Failed to sign in user...", ogError: err });
     }
 });
 

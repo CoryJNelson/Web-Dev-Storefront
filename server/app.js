@@ -1,4 +1,5 @@
 const express = require('express');
+const errorHandler = require("./app/middlewares/errorHandler");
 const routes = require("./app/config/index");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
@@ -14,6 +15,9 @@ app.use(express.json());
 
 // routes
 app.use("/api", routes);
+
+// Attach error handler
+app.use(errorHandler);
 
 // Connect to the database
 mongoose.connect(
