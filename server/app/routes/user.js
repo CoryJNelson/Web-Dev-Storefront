@@ -8,7 +8,6 @@
 // Imports
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 const { verifyToken, verifyTokenAndAuth, verifyTokenAndAdmin } = require("../middlewares/verifyToken");
 
@@ -39,6 +38,7 @@ router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
     }
 });
 
+// DELETE USER
 router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
     try {
         await User.findByIdAndDelete(req.params.id);
@@ -48,6 +48,7 @@ router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
     }
 });
 
+// GET USER
 router.get("/find/:id", verifyTokenAndAdmin, async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
@@ -58,6 +59,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res, next) => {
     }
 });
 
+//GET ALL USERS
 router.get("/", verifyTokenAndAdmin, async (req, res, next) => {
     const query = req.query.new
     try {
@@ -70,6 +72,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res, next) => {
     }
 });
 
+// GET USER METRICS
 router.get("/stats", verifyTokenAndAdmin, async (req, res, next) => {
     const date = new Date();
     const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
