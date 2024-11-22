@@ -2,7 +2,7 @@ const express = require('express');
 const errorHandler = require("./app/middlewares/errorHandler");
 const routes = require("./app/config/index");
 const dotenv = require("dotenv");
-const mongoose = require("mongoose");
+const connectDB = require("./db/mongoose");
 
 // We don't want sensitive information in our source code!
 dotenv.config({ path: '../.env' });
@@ -19,15 +19,8 @@ app.use("/api", routes);
 // Attach error handler
 app.use(errorHandler);
 
-// Connect to the database
-mongoose.connect(
-    process.env.DB_URL
-).then(
-    () => console.log("Connected...") // verify successful connection
-).catch((err) => {
-    console.error(`Error: Database connection failed\n${err.message}`);
-    process.exit(1); // exits the Node process
-});
+// Connect Database
+connectDB();
 
 app.get('/', (req, res) => {
     res.send('Welcome to the Store!');
