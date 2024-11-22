@@ -1,4 +1,5 @@
 const express = require('express');
+const routes = require("./app/config/index");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 
@@ -7,6 +8,12 @@ dotenv.config({ path: '../.env' });
 
 // Initialize the express app
 const app = express();
+
+// parsing JSON payloads
+app.use(express.json());
+
+// routes
+app.use("/api", routes);
 
 // Connect to the database
 mongoose.connect(
