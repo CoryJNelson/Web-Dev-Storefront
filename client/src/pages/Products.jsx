@@ -22,8 +22,8 @@ const Products = () => {
     getProducts();
   }, []);
 
-  if (loading) return <p>Loading products...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p>Loading products...</p>
+  if (error) return <p>{error}</p>
 
   return (
     <div>

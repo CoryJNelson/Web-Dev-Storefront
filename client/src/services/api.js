@@ -6,3 +6,8 @@ export const fetchProducts = async () => {
     const products = await API.get('/products');
     return products.data;
 };
+
+export const fetchProductById = async (id) => {
+    const response = await API.get(`/products/${id}`);
+    return response.data;
+};
