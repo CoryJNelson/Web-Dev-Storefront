@@ -9,10 +9,13 @@ const Products = () => {
 
   useEffect(() => {
     const getProducts = async () => {
+      // console.log('getProducts called');
       try {
         const data = await fetchProducts();
+        // console.log('Products fetched');
         setProducts(data);
       } catch (err) {
+        // console.log(err);
         setError('Failed to load products. Try refreshing the page.');
       } finally {
         setLoading(false);
