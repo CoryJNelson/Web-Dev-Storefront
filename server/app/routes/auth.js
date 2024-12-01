@@ -29,8 +29,9 @@ router.post("/register", async (req, res, next) => {
 
         // Save user to the database
         const savedUser = await newUser.save();
+        const { password, ...others } = savedUser._doc;
         console.log(`User ${savedUser.username} successfully registered...`);
-        res.status(201).json(savedUser);
+        res.status(201).json(...others);
     } catch (err) {
         next({ status: 500, message: "Failed to register user...", ogError: err });
     }
@@ -40,7 +41,12 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
         // check username
-        const user = await User.findOne({ username: req.body.username });
+        const user = await User.findOne({
+            $or: [
+                { username: req.body.usernameOrEmail },
+                { email: req.body.usernameOrEmail }
+            ]
+        });
         if (!user) {
             // use return - else function will continue and send a second response
             return next({ status: 401, message: "User not found..." });

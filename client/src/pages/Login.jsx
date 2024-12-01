@@ -1,19 +1,70 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { loginUser } from '../services/api'
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    usernameOrEmail: '',
+    password: ''
+  });
+
+  // Create states for communicating success and errors to user
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMessage('');
+
+    try {
+      const response = await loginUser({
+        usernameOrEmail: formData.usernameOrEmail,
+        password: formData.password,
+      });
+      localStorage.setItem('token', response.token);
+      setSuccessMessage(`User ${response.username} successfully logged in! Welcome back!`);
+      setTimeout(() => navigate('/'), 3000); // redirect after 3 seconds
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.error.message || 'An error occurred during login.');
+    }
+  };
+
   return (
     <div>
       <h1 style={styles.heading}>Login</h1>
-      <form style={styles.form}>
+      <form style={styles.form} onSubmit={handleSubmit}>
         <div style={styles.inputGroup}>
-          <label htmlFor="email">Email:</label>
-          <input type="email" id="email" placeholder="Enter your email" />
+          <label htmlFor="usernameOrEmail">Username or Email:</label>
+          <input 
+            type="text" 
+            id="usernameOrEmail" 
+            placeholder="Enter your username or email" 
+            name="usernameOrEmail" 
+            value={formData.usernameOrEmail} 
+            onChange={handleChange} 
+            required />
         </div>
         <div style={styles.inputGroup}>
           <label htmlFor="password">Password:</label>
-          <input type="password" id="password" placeholder="Enter your password" />
+          <input 
+            type="password" 
+            id="password" 
+            placeholder="Enter your password" 
+            name="password" 
+            value={formData.password} 
+            onChange={handleChange} 
+            required />
         </div>
+        {successMessage && <p>{successMessage}</p>}
+        {error && <p>{error}</p>}
         <button type="submit" style={styles.button}>Login</button>
       </form>
       <p style={styles.registerLink}>
