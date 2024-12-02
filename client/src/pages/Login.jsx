@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUser } from '../services/api'
+import { AuthContext } from '../services/AuthContext'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const Login = () => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -28,7 +30,7 @@ const Login = () => {
         usernameOrEmail: formData.usernameOrEmail,
         password: formData.password,
       });
-      localStorage.setItem('token', response.token);
+      login(response.token); // update global state with token
       setSuccessMessage(`User ${response.username} successfully logged in! Welcome back!`);
       setTimeout(() => navigate('/'), 3000); // redirect after 3 seconds
     } catch (err) {

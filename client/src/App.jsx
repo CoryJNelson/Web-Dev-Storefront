@@ -9,6 +9,7 @@ import About from './pages/About'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Cart from './pages/Cart'
+import AccountPage from './pages/AccountPage'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
                 <Route path="about" element={<About />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+                <Route path="users/:id" element={<AccountPage />} />
                 <Route path="cart" element={<Cart />} />
             </Route>
         </Routes>
