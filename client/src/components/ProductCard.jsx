@@ -61,9 +61,9 @@ const styles = {
     },
     quantityContainer: { display: 'flex', alignItems: 'center', marginBottom: '8px' },
     input: { width: '24px', height: '20px', textAlign: 'center', margin: '0 8px'},
-    quantityButtons: { backgroundColor: '#9ac9ea', width: '24px', height: '24px', border: 'none', textAlign: 'center', cursor: 'pointer' },
+    quantityButtons: { backgroundColor: '#d6d9da', width: '24px', height: '24px', border: 'none', textAlign: 'center', cursor: 'pointer' },
     link: { textDecoration: 'none', color: 'inherit' },
-    addToCart: { backgroundColor: '#9ac9ea', padding: '8px 14px', border: 'none', cursor: 'pointer' }
+    addToCart: { backgroundColor: '#d6d9da', padding: '8px 14px', border: 'none', cursor: 'pointer' }
 }
 
 export default ProductCard
