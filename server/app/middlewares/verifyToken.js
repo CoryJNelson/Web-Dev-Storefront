@@ -26,11 +26,23 @@ const verifyToken = (req, res, next) => {
     });
 };
 
-const verifyTokenAndAuth = (req, res, next) => {
+// const verifyTokenAndAuth = (req, res, next) => {
+//     verifyToken(req, res, (err) => {
+//         if (err) return next(err);
+//         // console.log('req.user', req.user);
+//         // console.log('req.params', req.params);
+//         if (req.user && (req.user.id === req.params.id || req.user.isAdmin)) {
+//             return next();
+//         } else {
+//             return next({ status: 403, message: "Not permitted..." });
+//         }
+//     });
+// };
+
+const verifyTokenAndAuth = (paramKey) => (req, res, next) => {
     verifyToken(req, res, (err) => {
         if (err) return next(err);
-
-        if (req.user && (req.user.id === req.params.id || req.user.isAdmin)) {
+        if (req.user && (req.user.id === req.params[paramKey] || req.user.isAdmin)) {
             return next();
         } else {
             return next({ status: 403, message: "Not permitted..." });

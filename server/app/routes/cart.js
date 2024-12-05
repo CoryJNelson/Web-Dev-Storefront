@@ -25,7 +25,7 @@ router.post("/", verifyToken, async (req, res, next) => {
 });
 
 // UPDATE CART
-router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
+router.put("/:userId", verifyTokenAndAuth("userId"), async (req, res, next) => {
     try {
         const updatedCart = await Cart.findByIdAndUpdate(
             req.params.id, 
@@ -39,17 +39,17 @@ router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
 });
 
 // DELETE CART
-router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
-    try {
-        await Cart.findByIdAndDelete(req.params.id);
-        res.status(200).json("Cart successfully deleted...");
-    } catch (err) {
-        next({ status: 500, message: "Failed to delete cart...", ogError: err });
-    }
-});
+// router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
+//     try {
+//         await Cart.findByIdAndDelete(req.params.id);
+//         res.status(200).json("Cart successfully deleted...");
+//     } catch (err) {
+//         next({ status: 500, message: "Failed to delete cart...", ogError: err });
+//     }
+// });
 
 // GET USER CART
-router.get("/find/:userId", verifyTokenAndAuth, async (req, res, next) => { 
+router.get("/find/:userId", verifyTokenAndAuth("userId"), async (req, res, next) => { 
     try {
         const cart = await Cart.findOne({userId: req.params.userId});
         res.status(200).json(cart);

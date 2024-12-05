@@ -49,7 +49,7 @@ router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
 });
 
 // GET USER
-router.get("/find/:id", verifyTokenAndAuth, async (req, res, next) => {
+router.get("/find/:id", verifyTokenAndAuth("id"), async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
         const { password, ...others } = user._doc; 

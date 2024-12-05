@@ -16,14 +16,10 @@ const Cart = () => {
   }
 
   const handleQuantityChange = (id, newQuantity) => {
-    if (newQuantity < 1) {
-      dispatch(removeFromCart({ id })); // Remove item if quantity is less than 1
-    } else {
-      const item = items.find((item) => item.id === id);
-      if (item) {
-        const delta = newQuantity - item.quantity; // Calculate the change in quantity
-        dispatch(addToCart({ id, name: item.name, price: item.price, quantity: delta }));
-      }
+    const item = items.find((item) => item.id === id);
+    if (item) {
+      const delta = newQuantity - item.quantity; // Calculate the change in quantity
+      dispatch(addToCart({ id, name: item.name, price: item.price, quantity: delta }));
     }
   };
 
