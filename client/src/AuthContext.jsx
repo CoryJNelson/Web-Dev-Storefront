@@ -12,6 +12,10 @@ export const AuthProvider = ({ children }) => {
         if (token) {
           try {
             const decoded = jwtDecode(token);
+            const currentTime = Date.now() / 1000;
+            if (decoded.exp < currentTime) {
+              throw new Error('Token expired');
+            }
             setUser({ _id: decoded.id });
           } catch (err) {
             setUser(null);
@@ -21,10 +25,10 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
     
-    const login = (token) => {
+    const login =  async (token) => {
+        localStorage.setItem('token', token);
         const decoded = jwtDecode(token);
         setUser({ _id: decoded.id });
-        localStorage.setItem('token', token);
     };
     
     const logout = () => {
