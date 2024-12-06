@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { registerUser } from '../services/api'
+import { registerUser, createCart } from '../services/api'
 import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
@@ -61,6 +61,7 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
       }); // Save user in database
+      await createCart(response._id); // create a cart for the user on registration
       setSuccessMessage(`User ${response.username} successfully registered! Welcome to the Jolt Family!`);
       setTimeout(() => navigate('/login'), 3000); // redirect after 3 seconds
     } catch (err) {

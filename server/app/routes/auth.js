@@ -31,7 +31,7 @@ router.post("/register", async (req, res, next) => {
         const savedUser = await newUser.save();
         const { password, ...others } = savedUser._doc;
         console.log(`User ${savedUser.username} successfully registered...`);
-        res.status(201).json(...others);
+        res.status(201).json(others);
     } catch (err) {
         next({ status: 500, message: "Failed to register user...", ogError: err });
     }
@@ -69,7 +69,7 @@ router.post("/login", async (req, res, next) => {
         const { password, ...others } = user._doc;
 
         // respond with destructured user and token
-        res.status(200).json({ ...others, token });
+        res.status(200).json({ others, token });
         console.log(`User ${user.username} successfully signed in...`);
     } catch (err) {
         next({ status: 500, message: "Failed to sign in user...", ogError: err });

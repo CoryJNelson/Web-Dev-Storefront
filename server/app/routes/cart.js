@@ -13,7 +13,7 @@ const { verifyToken, verifyTokenAndAuth, verifyTokenAndAdmin } = require("../mid
 // HTTP requests
 
 // CREATE CART
-router.post("/", verifyToken, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
     const newCart = new Cart(req.body);
 
     try {
@@ -52,6 +52,12 @@ router.put("/:userId", verifyTokenAndAuth("userId"), async (req, res, next) => {
 router.get("/find/:userId", verifyTokenAndAuth("userId"), async (req, res, next) => { 
     try {
         const cart = await Cart.findOne({userId: req.params.userId});
+        if (!cart) cart = { 
+            userId: req.params.userId,
+            products: [],
+            totalItems: 0,
+            total: 0
+        }
         res.status(200).json(cart);
     } catch (err) {
         next({ status: 500, message: "Failed to find cart...", ogError: err });

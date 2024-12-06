@@ -30,3 +30,12 @@ export const fetchUserById = async (id, token) => {
     });
     return response.data;
 }
+
+export const createCart = async (userId) => {
+    await API.post("/carts/", { 
+        userId,
+        products: [],
+        totalItems: 0,
+        total: 0,
+     });
+}
