@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { fetchProducts } from '../services/api'
+import { fetchProducts } from '../api'
 import ProductCard from '../components/ProductCard'
 
 const Products = () => {

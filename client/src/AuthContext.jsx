@@ -26,9 +26,9 @@ export const AuthProvider = ({ children }) => {
     }, []);
     
     const login =  async (token) => {
-        localStorage.setItem('token', token);
         const decoded = jwtDecode(token);
         setUser({ _id: decoded.id });
+        localStorage.setItem('token', token);
     };
     
     const logout = () => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { fetchUserById } from '../services/api'
+import { fetchUserById } from '../api'
 
 const AccountPage = () => {
     const { id } = useParams(); // get user id from URL
