@@ -5,6 +5,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
+    const [currentToken, setToken] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token'); // get token from client
@@ -28,6 +29,7 @@ export const AuthProvider = ({ children }) => {
     const login =  async (token) => {
         const decoded = jwtDecode(token);
         setUser({ _id: decoded.id });
+        setToken(token);
         localStorage.setItem('token', token);
     };
     
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, currentToken, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

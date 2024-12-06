@@ -31,11 +31,37 @@ export const fetchUserById = async (id, token) => {
     return response.data;
 }
 
-export const createCart = async (userId) => {
-    await API.post("/carts/", { 
-        userId,
-        products: [],
-        totalItems: 0,
-        total: 0,
-     });
+// export const createCart = async (userId) => {
+//     await API.post("/carts/", { 
+//         userId,
+//         products: [],
+//         totalItems: 0,
+//         total: 0,
+//      });
+// }
+
+export const createOrder = async (token, userId, cart) => {
+    const { items, total, quantity } = cart;
+    console.log(token, userId);
+
+    const response = await API.post('/orders/', 
+        {
+            userId,
+            products: items.map(item => ({
+                productId: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+            })),
+            total: total,
+            totalItems: quantity,
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        },
+    );
+
+    return response.data;
 }

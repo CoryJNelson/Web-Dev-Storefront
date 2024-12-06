@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { addToCart, clearCart, removeFromCart } from '../redux/cartSlice'
+import { AuthContext } from '../components/AuthContext'
+import { createOrder } from '../api'
  
 const Cart = () => {
   const { items, total, quantity } = useSelector(state => state.cart);
+  const { user } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const handleRemove = (id) => {
@@ -22,6 +25,20 @@ const Cart = () => {
       dispatch(addToCart({ id, name: item.name, price: item.price, quantity: delta }));
     }
   };
+
+  const handleCheckout = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      // console.log(token, user._id);
+      const response = await createOrder(token, user._id, {items, total, quantity});
+      // console.log(response.data);
+      dispatch(clearCart());
+      alert('Order placed successfully!');
+    } catch (err) {
+      console.error('Error placing order:', err);
+      alert('Failed to place order. Please try again.');
+    }
+  }
 
   return (
     <div>
@@ -58,7 +75,8 @@ const Cart = () => {
       <button onClick={handleClear}>Clear Cart</button>
       <p>Total Items: {quantity}</p>
       <p>Total Price: ${total.toFixed(2)}</p>
-      <p>Checkout or <Link to="/products" style={styles.link}>continue shopping!</Link></p>
+      <button onClick={handleCheckout}>Checkout</button>
+      {/* <p>Checkout or <Link to="/products" style={styles.link}>continue shopping!</Link></p> */}
     </div>
   )
 }
