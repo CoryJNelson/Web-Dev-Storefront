@@ -41,8 +41,8 @@ export const fetchUserById = async (id, token) => {
 // }
 
 export const createOrder = async (token, userId, cart) => {
-    const { items, total, quantity } = cart;
-    console.log(token, userId);
+    const { items, total, quantity, address } = cart;
+    // console.log(token, userId);
 
     const response = await API.post('/orders/', 
         {
@@ -55,6 +55,7 @@ export const createOrder = async (token, userId, cart) => {
             })),
             total: total,
             totalItems: quantity,
+            address,
         },
         {
             headers: {

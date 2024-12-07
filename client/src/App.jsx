@@ -10,6 +10,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Cart from './pages/Cart'
 import AccountPage from './pages/AccountPage'
+import Checkout from './pages/Checkout'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
                 <Route path="register" element={<Register />} />
                 <Route path="users/:id" element={<AccountPage />} />
                 <Route path="cart" element={<Cart />} />
+                <Route path="checkout" element={<Checkout />} />
             </Route>
         </Routes>
     </Router>
