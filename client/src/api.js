@@ -66,3 +66,15 @@ export const createOrder = async (token, userId, cart) => {
 
     return response.data;
 }
+
+export const updateUser = async (id, token, user) => {
+    console.log(id, token, user);
+    const response = await API.put(`/users/${id}`, user, 
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+    return response.data;
+}

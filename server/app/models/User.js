@@ -6,7 +6,7 @@ const UserSchema = new mongoose.Schema(
         username: { 
             type: String, 
             required: [true, "Username is required..."],
-            unique: true,
+            unique: [true, "Username is taken..."],
             trim: true,
             minlength: 6,
             maxlength: 30, 
@@ -14,7 +14,7 @@ const UserSchema = new mongoose.Schema(
         email: { 
             type: String, 
             required: [true, "Email is required..."], 
-            unique: true,
+            unique: [true, "Email already in use..."],
             trim: true,
             validate: {
                 validator: validator.isEmail,

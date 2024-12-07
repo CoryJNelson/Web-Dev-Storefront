@@ -66,11 +66,11 @@ router.post("/login", async (req, res, next) => {
         );
 
         // destructure user object - password contains password, others contains all other fields
-        const { password, ...others } = user._doc;
+        const { password, username, ...others } = user._doc;
 
         // respond with destructured user and token
-        res.status(200).json({ others, token });
-        console.log(`User ${user.username} successfully signed in...`);
+        res.status(200).json({ username, token });
+        console.log(`User ${username} successfully signed in...`);
     } catch (err) {
         next({ status: 500, message: "Failed to sign in user...", ogError: err });
     }

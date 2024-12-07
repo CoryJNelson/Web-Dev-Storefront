@@ -15,14 +15,28 @@ const { verifyToken, verifyTokenAndAuth, verifyTokenAndAdmin } = require("../mid
 
 // UPDATE USER
 router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
-    if (!req.user) {
-        return next({ status: 403, message: "User data not found..." });
+    const user = await User.findById(req.params.id);
+    if (!user) {
+        return next({ status: 404, message: "User not found..." });
     }
+    // console.log("User found:", user);
+
+    if (!req.body.oldPassword) {
+        return next({ status: 400, message: "Current password is required for updates..."});
+    }
+
+    // check password before updating user
+    const comparePassword = await bcrypt.compare(req.body.oldPassword, user.password);
+    if (!comparePassword) {
+        return next({ status: 401, message: "Incorrect password..." });
+    }
+    delete req.body.oldPassword;
     
     // Encrypt password if it is being updated
-    if (req.body.password) {
+    if (req.body.newPassword) {
         const salt = await bcrypt.genSalt(10);
-        req.body.password = await bcrypt.hash(req.body.password, salt);
+        req.body.password = await bcrypt.hash(req.body.newPassword, salt);
+        delete req.body.newPassword;
     }
 
     try {
@@ -31,7 +45,8 @@ router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
             { $set: req.body }, 
             { new: true }
         );
-        res.status(200).json(updatedUser);
+        const { password, ...others } = updatedUser._doc;
+        res.status(200).json(others);
         console.log(`User ${updatedUser.username} successfully updated...`);
     } catch (err) {
         next({ status: 500, message: "Failed to update user...", ogError: err });
@@ -39,17 +54,17 @@ router.put("/:id", verifyTokenAndAuth, async (req, res, next) => {
 });
 
 // DELETE USER
-router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
-    try {
-        await User.findByIdAndDelete(req.params.id);
-        res.status(200).json("User successfully deleted...");
-    } catch (err) {
-        next({ status: 500, message: "Failed to delete user...", ogError: err });
-    }
-});
+// router.delete("/:id", verifyTokenAndAuth, async (req, res, next) => {
+//     try {
+//         await User.findByIdAndDelete(req.params.id);
+//         res.status(200).json("User successfully deleted...");
+//     } catch (err) {
+//         next({ status: 500, message: "Failed to delete user...", ogError: err });
+//     }
+// });
 
 // GET USER
-router.get("/find/:id", verifyTokenAndAuth("id"), async (req, res, next) => {
+router.get("/find/:id", verifyTokenAndAuth, async (req, res, next) => {
     try {
         const user = await User.findById(req.params.id);
         const { password, ...others } = user._doc; 

@@ -47,11 +47,11 @@ const Checkout = () => {
           const response = await createOrder(token, user._id, {items, total, quantity, address});
           // console.log(response.data);
           dispatch(clearCart());
-          alert('Order placed successfully!');
-        //   setTimeout(() => navigate(''), 1000);
+          setSuccessMessage('Order placed successfully! View order details under Account -> Order History');
+        //   setTimeout(() => navigate(''), 3000);
         } catch (err) {
           console.error('Error placing order:', err);
-          alert('Failed to place order. Please try again.');
+          setErrors({ server: 'Failed to submit order. Please try again later.' });
         }
     }
 
@@ -123,7 +123,8 @@ const Checkout = () => {
                 </div>
                 <button type="submit" style={styles.button}>Checkout</button>
             </form>
-            
+            {successMessage && <p style={styles.success}>{successMessage}</p>}
+            {errors.server && <p style={styles.errors}>{errors.server}</p>}
         </div>
 )
 }
@@ -135,8 +136,8 @@ const styles = {
     button: { padding: '0.5rem', background: '#007BFF', color: '#fff', border: 'none', cursor: 'pointer' },
     link: { textDecoration: 'none', color: '#007BFF' },
     loginLink: { marginTop: '1rem', textAlign: 'center' },
-    success: { textAlign: 'center', margin: '0.5rem 0 0.5rem 0' },
-    errors: { color: 'red', margin: '0.5rem 0 0.5rem 0' }
+    success: { color: 'green', margin: '0.5rem 0 0.5rem 0', alignItems: 'center' },
+    errors: { color: 'red', margin: '0.5rem 0 0.5rem 0', alignItems: 'center' }
   }
 
 export default Checkout
