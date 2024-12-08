@@ -37,8 +37,8 @@ const ProductCard = ({ product }) => {
         <div style={styles.card}>
           <Link to={`/products/${product._id}`} style={styles.link}>
             <h2>{product.name}</h2>
-            <p>{product.desc}</p>
-            <p>{product.price}</p>
+            <p>{product.pack}</p>
+            <p>${product.price}</p>
           </Link>
           <div style={styles.quantityContainer}>
             <button onClick={decrementQuantity} style={styles.quantityButtons} >-</button>
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
 
 const styles = {
     card: {
-        border: '1px solid #ddd', borderRadius: '8px', padding: '1rem', alignItems: 'center', backgroundColor: '#fff',
+        border: '2px solid #ddd', borderRadius: '8px', padding: '1rem', alignItems: 'center', backgroundColor: '#fff',
     },
     quantityContainer: { display: 'flex', alignItems: 'center', marginBottom: '8px' },
     input: { width: '24px', height: '20px', textAlign: 'center', margin: '0 8px'},

@@ -8,7 +8,6 @@ const ProductSchema = new mongoose.Schema(
             required:true,
             maxlength: [200, "Description is limited to 200 characters..."],
         },
-        img: { type: String, required:true },
         category: { type: Array },
         pack: { 
             type: String,

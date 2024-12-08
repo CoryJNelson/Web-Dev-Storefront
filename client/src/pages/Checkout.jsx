@@ -48,7 +48,7 @@ const Checkout = () => {
           // console.log(response.data);
           dispatch(clearCart());
           setSuccessMessage('Order placed successfully! View order details under Account -> Order History');
-        //   setTimeout(() => navigate(''), 3000);
+          setTimeout(() => navigate('/'), 3000);
         } catch (err) {
           console.error('Error placing order:', err);
           setErrors({ server: 'Failed to submit order. Please try again later.' });

@@ -45,8 +45,9 @@ const Products = () => {
 const styles = {
   heading: { textAlign: 'center' },
   productGrid: {
-    display: "grid", gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-    gap: '1rem', marginTop: '1rem',
+    display: "grid", 
+    gridTemplateColumns: 'repeat(3, minmax(200px, 1fr))',
+    gap: '1rem',
   }
 }
 
