@@ -31,15 +31,6 @@ export const fetchUserById = async (id, token) => {
     return response.data;
 }
 
-// export const createCart = async (userId) => {
-//     await API.post("/carts/", { 
-//         userId,
-//         products: [],
-//         totalItems: 0,
-//         total: 0,
-//      });
-// }
-
 export const createOrder = async (token, userId, cart) => {
     const { items, total, quantity, address } = cart;
     // console.log(token, userId);
@@ -67,8 +58,17 @@ export const createOrder = async (token, userId, cart) => {
     return response.data;
 }
 
+export const getUserOrders = async (id, token) => {
+    const response = await API.get(`/orders/user/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return response.data;
+}
+
 export const updateUser = async (id, token, user) => {
-    console.log(id, token, user);
+    // console.log(id, token, user);
     const response = await API.put(`/users/${id}`, user, 
         {
             headers: {

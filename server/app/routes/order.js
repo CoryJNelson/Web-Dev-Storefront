@@ -49,9 +49,9 @@ router.delete("/:id", verifyTokenAndAdmin, async (req, res, next) => {
 });
 
 // GET USER ORDERS
-router.get("/find/:userId", verifyTokenAndAuth, async (req, res, next) => { 
+router.get("/user/:id", verifyTokenAndAuth, async (req, res, next) => { 
     try {
-        const orders = await Order.find({userId: req.params.userId}); //users may have more than one order, return all
+        const orders = await Order.find({userId: req.params.id}); //users may have more than one order, return all
         res.status(200).json(orders);
     } catch (err) {
         next({ status: 500, message: "Failed to find user's orders...", ogError: err });

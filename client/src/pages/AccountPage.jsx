@@ -14,17 +14,19 @@ const AccountPage = () => {
     const [loading, setLoading] = useState(true);
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
+    const [component, setComponent] = useState('accountDetails');
 
     useEffect(() => {
         const getUser = async () => {
             const token = localStorage.getItem('token');
             try {
-            const data = await fetchUserById(id, token);
-            setUser(data);
+                const data = await fetchUserById(id, token);
+                setUser(data);
             } catch (err) {
-            setErrors({ fetchUser: 'Failed to load account. Try refreshing the page.'  });
+                console.error(err);
+                setErrors({ fetchUser: 'Failed to load account. Try refreshing the page.'  });
             } finally {
-            setLoading(false);
+                setLoading(false);
             }
         }
 
@@ -48,7 +50,7 @@ const AccountPage = () => {
         }, {});
 
         try {
-            console.log(user._id, localStorage.getItem('token'), filteredData);
+            // console.log(user._id, localStorage.getItem('token'), filteredData);
             const response = await updateUser(user._id, localStorage.getItem('token'), filteredData);
             console.log(response);
             setSuccessMessage(`User ${response.username} was successfully updated!`);
@@ -60,58 +62,90 @@ const AccountPage = () => {
     if (loading) return <p>Loading account details...</p>
     if (errors.fetchUser) return <p>{errors.fetchUser}</p>
 
+    // Switch case for menu selection
+
+    const switchComponent = () => {
+        switch (component) {
+            case "accountDetails":
+                return (
+                    <div>
+                        <h1>{user.username}</h1>
+                        <p>Email: {user.email}</p>
+                        <p>Account Created: {new Date(user.createdAt).toLocaleString()}</p>
+                    </div>
+                );
+            case "updateAccount":
+                return (
+                    <div>
+                        <h2>Update Account Details</h2>
+                        <form onSubmit={handleUpdateUser}>
+                            <div>
+                                <label htmlFor="username">Username: </label>
+                                <input 
+                                    type="text" 
+                                    id="username" 
+                                    placeholder="Enter a New Username"
+                                    name="username"
+                                    value={formData.username}
+                                    onChange={handleChange} />
+                            </div>
+                            <div>
+                                <label htmlFor="email">Email: </label>
+                                <input 
+                                    type="text" 
+                                    id="email" 
+                                    placeholder="Enter a New Email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleChange} />
+                            </div>
+                            <div>
+                                <label htmlFor="newPassword">New Password: </label>
+                                <input 
+                                    type="text" 
+                                    id="newPassword" 
+                                    placeholder="Enter a New Password"
+                                    name="newPassword"
+                                    value={formData.newPassword}
+                                    onChange={handleChange} />
+                            </div>
+                            <div>
+                                <label htmlFor="currentPassword">Current Password: </label>
+                                <input 
+                                    type="text" 
+                                    id="currentPassword" 
+                                    placeholder="Enter Your Current Password"
+                                    name="oldPassword"
+                                    value={formData.oldPassword} 
+                                    onChange={handleChange}
+                                    required />
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                        {successMessage && <p>{successMessage}</p>}
+                    </div>
+                );
+            default:
+                return null;
+        }
+    }
+
     return (
         <div>
-            <h1>{user.username}</h1>
-            <p>Email: {user.email}</p>
-            <p>Account Created: {new Date(user.createdAt).toLocaleString()}</p>
-            <h2>Update Account Details</h2>
-            <form onSubmit={handleUpdateUser}>
-                <div>
-                    <label htmlFor="username">Username</label>
-                    <input 
-                        type="text" 
-                        id="username" 
-                        placeholder="Enter a New Username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input 
-                        type="text" 
-                        id="email" 
-                        placeholder="Enter a New Email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="newPassword">New Password</label>
-                    <input 
-                        type="text" 
-                        id="newPassword" 
-                        placeholder="Enter a New Password"
-                        name="newPassword"
-                        value={formData.newPassword}
-                        onChange={handleChange} />
-                </div>
-                <div>
-                    <label htmlFor="currentPassword">Current Password</label>
-                    <input 
-                        type="text" 
-                        id="currentPassword" 
-                        placeholder="Enter Your Current Password"
-                        name="oldPassword"
-                        value={formData.oldPassword} 
-                        onChange={handleChange}
-                        required />
-                </div>
-                <button type="submit">Submit</button>
-            </form>
-            {successMessage && <p>{successMessage}</p>}
-            <h2>Order History</h2>
+            <aside>
+                <ul>
+                    <li>
+                        <button onClick={() => setComponent('accountDetails')} >Account Details</button>
+                    </li>
+                    <li>
+                        <button onClick={() => setComponent('updateAccount')} >Update Account</button>
+                    </li>
+                    <li>
+                        <Link to={`/orders/${user._id}`}><button>Order History</button></Link>
+                    </li>
+                </ul>
+            </aside>
+            <main>{switchComponent()}</main>
         </div>
     )
 }

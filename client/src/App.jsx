@@ -10,6 +10,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import Cart from './pages/Cart'
 import AccountPage from './pages/AccountPage'
+import OrderHistory from './pages/OrderHistory'
 import Checkout from './pages/Checkout'
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
                 <Route path="users/:id" element={<AccountPage />} />
+                <Route path="orders/:id" element={<OrderHistory />} />
                 <Route path="cart" element={<Cart />} />
                 <Route path="checkout" element={<Checkout />} />
             </Route>
