@@ -68,11 +68,14 @@ const Navbar = () => {
             <>
               <Link to={`/users/${user._id}`} style={styles.link}><NavItem>Account</NavItem></Link>
               <button onClick={handleLogout} style={styles.logoutButton}>Sign Out</button>
+              <Link to="/cart" style={styles.link}><NavItem>Cart</NavItem></Link>
             </>
           ) : (
-            <Link to="/login" style={styles.link}><NavItem>Login</NavItem></Link>
+            <>
+              <Link to="/login" style={styles.link}><NavItem>Login</NavItem></Link>
+              <Link to="/register" style={styles.link}><NavItem>Register</NavItem></Link>
+            </>
           )}
-          <Link to="/cart" style={styles.link}><NavItem>Cart</NavItem></Link>
         </Right>
       </Wrapper>
     </Container>
@@ -81,7 +84,7 @@ const Navbar = () => {
 
 const styles = {
     link: { color: '#fff', textDecoration: 'none' },
-    logoutButton: { background: '#222', color: '#fff', cursor: 'pointer', padding: '0 1rem' }
+    logoutButton: { background: '#222', color: '#fff', cursor: 'pointer', padding: '0 1rem', marginLeft: '25px' }
 };
 
 export default Navbar
